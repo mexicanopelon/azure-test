@@ -58,6 +58,7 @@
       resource_group: ansible-awx-test
       name: myVM-cdelapaz
       vm_size: Standard_DS1_v2
+      managed_disk_type: Standard_LRS
       admin_username: ubuntu
       admin_password: ubuntu
       network_interfaces: myNIC-cdelapaz
