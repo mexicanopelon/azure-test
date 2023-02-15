@@ -57,7 +57,7 @@
     azure_rm_virtualmachine:
       resource_group: ansible-awx-test
       name: myVM
-      vm_size: Standard DS1 v2
+      vm_size: Standard_DS1_v2
       admin_username: ubuntu
       admin_password: ubuntu
       network_interfaces: myNIC
