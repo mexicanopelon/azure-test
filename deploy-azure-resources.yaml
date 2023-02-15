@@ -11,21 +11,21 @@
   - name: Create a Virtual Network (VNET)
     azure_rm_virtualnetwork:
       resource_group: ansible-awx-test
-      name: myVnet
+      name: myVnet-cdelapaz
       address_prefixes: "10.0.0.0/16"
 
   - name: Add a subnet in the VNET
     azure_rm_subnet:
       resource_group: ansible-awx-test
-      name: mySubnet
+      name: mySubnet-cdelapaz
       address_prefix: "10.0.1.0/24"
-      virtual_network: myVnet
+      virtual_network: myVnet-cdelapaz
 
   - name: Create a public IP address
     azure_rm_publicipaddress:
       resource_group: ansible-awx-test
       allocation_method: Static
-      name: myPublicIP
+      name: myPublicIP-cdelapaz
     register: output_ip_address
 
 #  - name: Print Public IP of VM
@@ -35,7 +35,7 @@
   - name: Create a Network Security Group (NSG) that allows SSH (port 22)
     azure_rm_securitygroup:
       resource_group: ansible-awx-test
-      name: myNetworkSecurityGroup
+      name: myNetworkSecurityGroup-cdelapaz
       rules:
         - name: SSH
           protocol: Tcp
@@ -47,20 +47,20 @@
   - name: Create a virtual Network Interface Card (NIC)
     azure_rm_networkinterface:
       resource_group: ansible-awx-test
-      name: myNIC
-      virtual_network: myVnet
-      subnet: mySubnet
-      public_ip_name: myPublicIP
-      security_group: myNetworkSecurityGroup
+      name: myNIC-cdelapaz
+      virtual_network: myVnet-cdelapaz
+      subnet: mySubnet-cdelapaz
+      public_ip_name: myPublicIP-cdelapaz
+      security_group: myNetworkSecurityGroup-cdelapaz
  
   - name: Create a VM
     azure_rm_virtualmachine:
       resource_group: ansible-awx-test
-      name: myVM
+      name: myVM-cdelapaz
       vm_size: Standard_DS1_v2
       admin_username: ubuntu
       admin_password: ubuntu
-      network_interfaces: myNIC
+      network_interfaces: myNIC-cdelapaz
       image:
         offer: 0001-com-ubuntu-server-focal
         publisher: canonical
