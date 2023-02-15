@@ -1,0 +1,61 @@
+- name: Create a VM on Azure cloud
+  hosts: localhost
+  connection: local
+
+  vars_prompt:
+    - name: admin_password
+      prompt: "Enter Local Admin Password"  
+
+  tasks:
+  - name: Create a Virtual Network (VNET)
+    azure_rm_virtualnetwork:
+      resource_group: ansible-awx-test
+      name: myVnet
+      address_prefixes: "10.0.0.0/16"
+  - name: Add a subnet in the VNET
+    azure_rm_subnet:
+      resource_group: ansible-awx-test
+      name: mySubnet
+      address_prefix: "10.0.1.0/24"
+      virtual_network: myVnet
+  - name: Create a public IP address
+    azure_rm_publicipaddress:
+      resource_group: ansible-awx-test
+      allocation_method: Static
+      name: myPublicIP
+    register: output_ip_address
+  - name: Print Public IP of VM
+    debug:
+      msg: "The public IP of VM is {{ output_ip_address.state.ip_address }}."
+  - name: Create a Network Security Group (NSG) that allows SSH (port 22)
+    azure_rm_securitygroup:
+      resource_group: ansible-awx-test
+      name: myNetworkSecurityGroup
+      rules:
+        - name: SSH
+          protocol: Tcp
+          destination_port_range: 22
+          access: Allow
+          priority: 1001
+          direction: Inbound
+  - name: Create a virtual Network Interface Card (NIC)
+    azure_rm_networkinterface:
+      resource_group: ansible-awx-test
+      name: myNIC
+      virtual_network: myVnet
+      subnet: mySubnet
+      public_ip_name: myPublicIP
+      security_group: myNetworkSecurityGroup
+  - name: Create a VM
+    azure_rm_virtualmachine:
+      resource_group: ansible-awx-test
+      name: myVM
+      vm_size: Standard B2s
+      admin_username: ubuntu
+      admin_password: "{{ admin_password }}"
+      network_interfaces: myNIC
+      image:
+        offer: 0001-com-ubuntu-server-focal
+        publisher: canonical
+        sku: '20_04-lts-gen2'
+        version: latest
