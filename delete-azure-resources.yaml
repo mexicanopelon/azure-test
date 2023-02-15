@@ -36,6 +36,7 @@
     azure_rm_subnet:
       name: mySubnet-cdelapaz
       resource_group: ansible-awx-test
+      virtual_network: myVnet-cdelapaz
       state: absent
     register: subnet
   - debug:
