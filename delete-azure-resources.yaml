@@ -1,0 +1,51 @@
+---
+- name: Delete Azure VM
+  hosts: localhost
+  connection: local
+
+  tasks:
+
+  - name: Deleting the Virtual Machine - myVM-cdelapaz
+    azure_rm_virtualmachine:
+      name: myVM-cdelapaz
+      resource_group: ansible-awx-test
+      state: absent
+    register: vm 
+  - debug:
+      var: vm
+
+  - name: Deleting network interface - myNIC-cdelapaz
+    azure_rm_networkinterface:
+      name: myNIC-cdelapaz
+      resource_group: ansible-awx-test
+      state: absent
+    register: vnet 
+  - debug:
+      var: vnet
+
+  - name: Deleting Public IP - myPublicIP-cdelapaz
+    azure_rm_publicipaddress:
+      name: myPublicIP-cdelapaz
+      resource_group: ansible-awx-test
+      state: absent
+    register: pip
+  - debug:
+      var: pip
+
+  - name: Deleting Subnet - mySubnet-cdelapaz
+    azure_rm_subnet:
+      name: mySubnet-cdelapaz
+      resource_group: ansible-awx-test
+      state: absent
+    register: subnet
+  - debug:
+      var: subnet
+
+  - name: Deleting Virtual Network - myVnet-cdelapaz
+    azure_rm_virtualnetwork:
+      name: myVnet-cdelapaz
+      resource_group: ansible-awx-test
+      state: absent
+    register: vnet
+  - debug:
+      var: vnet
