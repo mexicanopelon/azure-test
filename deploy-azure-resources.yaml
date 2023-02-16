@@ -62,14 +62,13 @@
       disk_size_gb: 30
     register: myDisk
   - debug:
-      var: myDisk
+      var: myDisk.state.id
 
   - name: Create a VM
     azure_rm_virtualmachine:
       resource_group: ansible-awx-test
       name: myVM-cdelapaz
       vm_size: Standard_DS1_v2
-      os_disk_name: myDisk-cdelapaz
       admin_username: ubuntu
       admin_password: MyStrongPassw0rd!
       network_interfaces: myNIC-cdelapaz
