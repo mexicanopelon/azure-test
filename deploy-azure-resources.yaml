@@ -62,7 +62,7 @@
       disk_size_gb: 30
     register: myDisk
   - debug:
-	var: myDisk
+      var: myDisk
 
   - name: Create a VM
     azure_rm_virtualmachine:
