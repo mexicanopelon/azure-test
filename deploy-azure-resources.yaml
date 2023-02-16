@@ -78,6 +78,6 @@
         publisher: canonical
         sku: '20_04-lts-gen2'
         version: latest
-    data_disks:
-      - lun: 0
-        managed_disk_id: "{{ myDisk.disk_id }}"
+      data_disks:
+        - lun: 0
+          managed_disk_id: "{{ myDisk.disk_id }}"
