@@ -60,6 +60,9 @@
       resource_group: ansible-awx-test
       storage_account_type: Standard_LRS 
       disk_size_gb: 30
+    register: myDisk
+  - debug:
+	var: myDisk
 
   - name: Create a VM
     azure_rm_virtualmachine:
@@ -75,3 +78,6 @@
         publisher: canonical
         sku: '20_04-lts-gen2'
         version: latest
+    data_disks:
+      - lun: 0
+        managed_disk_id: "{{ myDisk.disk_id }}"
