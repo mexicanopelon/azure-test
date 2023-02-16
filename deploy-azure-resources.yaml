@@ -59,7 +59,7 @@
       location: eastus
       resource_group: ansible-awx-test
       storage_account_type: Standard_LRS 
-      stringdisk_size_gb: 30
+      disk_size_gb: 30
 
   - name: Create a VM
     azure_rm_virtualmachine:
