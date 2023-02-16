@@ -23,6 +23,15 @@
   - debug:
       var: vnet
 
+  - name: Deleting Network Security Group (NSG) - myNetworkSecurityGroup-cdelapaz
+    azure_rm_securitygroup:
+      resource_group: ansible-awx-test
+      name: myNetworkSecurityGroup-cdelapaz
+      state: absent
+    register: nsg
+  - debug:
+      var: nsg
+
   - name: Deleting Public IP - myPublicIP-cdelapaz
     azure_rm_publicipaddress:
       name: myPublicIP-cdelapaz
@@ -50,3 +59,6 @@
     register: vnet
   - debug:
       var: vnet
+
+
+

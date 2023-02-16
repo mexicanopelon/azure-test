@@ -52,7 +52,15 @@
       subnet: mySubnet-cdelapaz
       public_ip_name: myPublicIP-cdelapaz
       security_group: myNetworkSecurityGroup-cdelapaz
- 
+
+  - name: Create managed disk
+    azure_rm_manageddisk:
+      name: myDisk-cdelapaz
+      location: eastus
+      resource_group: ansible-awx-test
+      storage_account_type: Standard_LRS 
+      stringdisk_size_gb: 30
+
   - name: Create a VM
     azure_rm_virtualmachine:
       resource_group: ansible-awx-test
