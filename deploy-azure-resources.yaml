@@ -53,22 +53,23 @@
       public_ip_name: myPublicIP-cdelapaz
       security_group: myNetworkSecurityGroup-cdelapaz
 
-  - name: Create managed disk
-    azure_rm_manageddisk:
-      name: myDisk-cdelapaz
-      location: eastus
-      resource_group: ansible-awx-test
-      storage_account_type: Standard_LRS 
+#  - name: Create managed disk
+#    azure_rm_manageddisk:
+#      name: myDisk-cdelapaz
+#      location: eastus
+#      resource_group: ansible-awx-test
+#      storage_account_type: Standard_LRS 
 #      disk_size_gb: 30
-    register: myDisk
-  - debug:
-      var: myDisk.state.id
+#    register: myDisk
+#  - debug:
+#      var: myDisk.state.id
 
   - name: Create a VM
     azure_rm_virtualmachine:
       resource_group: ansible-awx-test
       name: myVM-cdelapaz
       vm_size: Standard_DS1_v2
+      managed_disk_type: Standard_LRS
       admin_username: ubuntu
       admin_password: MyStrongPassw0rd!
       network_interfaces: myNIC-cdelapaz
@@ -77,6 +78,6 @@
         publisher: canonical
         sku: '20_04-lts-gen2'
         version: latest
-      data_disks:
-        - lun: 0
-          managed_disk_id: "{{ myDisk.state.id }}"
+#      data_disks:
+#        - lun: 0
+#          managed_disk_id: "{{ myDisk.state.id }}"
