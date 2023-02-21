@@ -2,9 +2,10 @@
   azure_rm_resourcegroup:
     name: abs-az-resource-group
     location: eastus
+    state: present
     tags:
       testing: testing
       delete: never
-  register: abs-rg
+  register: abs_rg
 - debug:
-    var: abs-rg
+    var: abs_rg
