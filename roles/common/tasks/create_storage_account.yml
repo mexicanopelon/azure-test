@@ -1,7 +1,7 @@
 - name: Configure a storage account with firewall and virtual networks
   azure_rm_storageaccount:
     resource_group: abs-az-resource-group
-    name: abs-az-storage-acct
+    name: absAzStorageAcct
     type: Standard_RAGRS
     network_acls:
       bypass: AzureServices,Metrics
