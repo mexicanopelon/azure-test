@@ -1,5 +1,5 @@
 - name: Create a Virtual Network (VNET)
   azure_rm_virtualnetwork:
     name: abs-az-vnet
-    name: abs-az-resource-group
+    resource_group: abs-az-resource-group
     address_prefixes: "10.0.0.0/16"
