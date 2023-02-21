@@ -3,5 +3,5 @@
     name: "abs-az-resource-group"
     location: "eastus"
     tags:
-        testing: testing
-        delete: never
+      testing: testing
+      delete: never
