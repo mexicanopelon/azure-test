@@ -7,7 +7,7 @@
       bypass: AzureServices,Metrics
       default_action: Deny
       virtual_network_rules:
-        - id: abs-az-subnet.id
+        - id: abs-az-vnet.id
           action: Allow
       ip_rules:
         - value: 1.2.3.4
