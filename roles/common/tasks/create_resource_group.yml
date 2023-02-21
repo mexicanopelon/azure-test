@@ -5,11 +5,5 @@
     state: present
   register: abs_az_rg
 
-- set_fact: 
-    psk={{ abs_az_rg.stdout }}
-
-- debug: var=psk
-  run_once: true
-
 - debug:
-    var: abs_az_rg
+    var: abs_az_rg.state.name
