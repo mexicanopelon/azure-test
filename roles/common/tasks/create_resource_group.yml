@@ -3,9 +3,6 @@
     name: abs-az-resource-group
     location: eastus
     state: present
-    tags:
-      testing: testing
-      delete: never
-  register: abs_rg
+  register: abs_az_rg
 - debug:
-    var: abs_rg
+    var: abs_az_rg.name
