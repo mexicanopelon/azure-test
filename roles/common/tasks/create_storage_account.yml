@@ -1,16 +1,8 @@
-- name: Configure a storage account with firewall and virtual networks
+- name: Create a storage account
   azure_rm_storageaccount:
     resource_group: abs-az-resource-group
     name: absazstorageacct
     type: Standard_RAGRS
-    network_acls:
-      bypass: AzureServices,Metrics
-      default_action: Deny
-      virtual_network_rules:
-        - id: abs-az-vnet.id
-          action: Allow
-      ip_rules:
-        - value: 1.2.3.4
-          action: Allow
-        - value: 123.234.123.0/24
-          action: Allow
+    tags:
+      testing: testing
+      delete: on-exit
