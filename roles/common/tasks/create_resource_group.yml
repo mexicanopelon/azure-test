@@ -5,3 +5,6 @@
     tags:
       testing: testing
       delete: never
+  register: abs-rg
+- debug:
+    var: abs-rg
