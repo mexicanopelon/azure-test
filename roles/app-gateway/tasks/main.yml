@@ -1,0 +1,2 @@
+- name: Create application gateway
+  include_tasks: create_app_gateway.yml

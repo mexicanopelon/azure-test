@@ -1,0 +1,8 @@
+- name: Create a linux app service plan
+  azure_rm_appserviceplan:
+    resource_group: "abs-az-resource-group"
+    name: "abs-az-app-service"
+    location: "abs-az-location"
+    sku: S1
+    is_linux: true
+    number_of_workers: 1

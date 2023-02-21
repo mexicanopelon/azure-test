@@ -1,0 +1,8 @@
+---
+roles:
+- name: freehck.disable_swap
+- name: linux-system-roles.crypto_policies
+collections:
+- ansible.posix
+- community.general
+- kubernetes.core

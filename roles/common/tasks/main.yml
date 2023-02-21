@@ -1,0 +1,20 @@
+- name: Create resource group
+  include_tasks: create_resource_group.yml
+
+- name: Create a Virtual Network (VNET)
+  include_tasks: create_virtual_network.yml
+
+- name: Create subnet
+  include_tasks: create_subnet.yml
+
+- name: Create a public IP address
+  include_tasks: create_public_ip.yml
+
+- name: Create a Network Security Group (NSG)
+  include_tasks: create_network_security_group.yml
+
+- name: Create a virtual Network Interface Card (NIC)
+  include_tasks: create_network_interface_card.yml
+
+- name: Create a storage account
+  include_tasks: create_storage_account.yml

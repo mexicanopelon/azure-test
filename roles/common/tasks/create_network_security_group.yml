@@ -1,0 +1,11 @@
+- name: Create a Network Security Group (NSG) that allows SSH (port 22)
+  azure_rm_securitygroup:
+    name: "abs-az-nsg"
+    resource_group: "abs-az-resource-group"
+    rules:
+      - name: SSH
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 1001
+        direction: Inbound

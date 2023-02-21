@@ -1,0 +1,38 @@
+- name: Create instance of Application Gateway
+  azure_rm_appgateway:
+    resource_group:  "abs-az-resource-group"
+    name:  "abs-az-app-gateway"
+    sku:
+      name: standard_small
+      tier: standard
+      capacity: 2
+    gateway_ip_configurations:
+      - subnet:
+          id: "abs-az-subnet.id"
+        name: abs_az_app_gateway_ip_config
+    frontend_ip_configurations:
+      - subnet:
+          id: "subnet_id"
+        name: abs_az_gateway_frontend_ip_config
+    frontend_ports:
+      - port: 90
+        name: abs_az_app_gateway_frontend_port
+    backend_address_pools:
+      - backend_addresses:
+          - ip_address: 10.0.0.4
+        name: abs_az_backend_address_pool
+    backend_http_settings_collection:
+      - port: 80
+        protocol: http
+        cookie_based_affinity: enabled
+        name: abs_az_app_gateway_http_settings
+    http_listeners:
+      - frontend_ip_configuration: abs_az_gateway_frontend_ip_config
+        frontend_port: abs_az_app_gateway_frontend_port
+        name: abs_az_http_listener
+    request_routing_rules:
+      - rule_type: Basic
+        backend_address_pool: abs_az_backend_address_pool
+        backend_http_settings: abs_az_app_gateway_http_settings
+        http_listener: abs_az_http_listener
+        name: rule1

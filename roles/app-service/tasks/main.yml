@@ -1,0 +1,2 @@
+- name: Create application service
+  include_tasks: create_app_service.yml

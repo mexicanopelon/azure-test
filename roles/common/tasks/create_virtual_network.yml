@@ -1,0 +1,5 @@
+- name: Create a Virtual Network (VNET)
+  azure_rm_virtualnetwork:
+    name: "abs-az-vnet"
+    resource_group: "abs-az-resource-group"
+    address_prefixes: "abs-az-vnet-cidr"
