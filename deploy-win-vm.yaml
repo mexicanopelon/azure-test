@@ -8,7 +8,7 @@
 
   tasks:
   # - name: Create a resource group
-  #   azure_rm_resourcegroup:
+  #   azure.azcollection.azure_rm_resourcegroup:
   #     name: azure-test-cdelapaz
   #     location: eastus
   #     tags:
@@ -16,20 +16,20 @@
   #       delete: never
 
   # - name: Create a Virtual Network (VNET)
-  #   azure_rm_virtualnetwork:
+  #   azure.azcollection.azure_rm_virtualnetwork:
   #     resource_group: azure-test-cdelapaz
   #     name: azure-test-vnet
   #     address_prefixes: "10.0.0.0/16"
 
   - name: Add a subnet in the VNET
-    azure_rm_subnet:
+    azure.azcollection.azure_rm_subnet:
       resource_group: azure-test-cdelapaz
       name: azure-winvm-subnet
       address_prefix: "10.0.2.0/24"
       virtual_network: azure-test-vnet
 
   - name: Create a public IP address
-    azure_rm_publicipaddress:
+    azure.azcollection.azure_rm_publicipaddress:
       resource_group: azure-test-cdelapaz
       allocation_method: Static
       name: azure-winvm-public-ip
@@ -40,7 +40,7 @@
 #      msg: "The public IP of VM is {{ output_ip_address.state.ip_address }}."
 
   - name: Create a Network Security Group (NSG) that allows SSH (port 22)
-    azure_rm_securitygroup:
+    azure.azcollection.azure_rm_securitygroup:
       resource_group: azure-test-cdelapaz
       name: azure-winvm-nsg
       rules:
@@ -68,7 +68,7 @@
             direction: Inbound
 
   - name: Create a virtual Network Interface Card (NIC)
-    azure_rm_networkinterface:
+    azure.azcollection.azure_rm_networkinterface:
       resource_group: azure-test-cdelapaz
       name: azure-winvm-nic
       virtual_network: azure-test-vnet
@@ -80,7 +80,7 @@
           primary: True
 
 #  - name: Create managed disk
-#    azure_rm_manageddisk:
+#    azure.azcollection.azure_rm_manageddisk:
 #      name: myDisk-cdelapaz
 #      location: eastus
 #      resource_group: azure-test-cdelapaz
@@ -91,7 +91,7 @@
 #      var: myDisk.state.id
 
   - name: Create a Windows VM
-      azure_rm_virtualmachine:
+      azure.azcollection.azure_rm_virtualmachine:
         resource_group: azure-test-cdelapaz
         name: azure-winvm-cdelapaz
         vm_size: Standard_DS1_v2
