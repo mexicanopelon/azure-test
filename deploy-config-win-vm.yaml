@@ -95,13 +95,8 @@
           version: latest
 
 - name: Create a VM on Azure cloud
-  hosts: 172.174.64.13
+  hosts: windows
   connection: local
-  vars:
-    ansible_connection: winrm 
-    ansible_user: cdelapaz 
-    ansible_password: MyStrongPassw0rd!
-    ansible_winrm_server_cert_validation: ignore
   tasks:
   - name: Run basic PowerShell script
     ansible.windows.win_powershell:
