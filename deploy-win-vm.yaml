@@ -78,3 +78,18 @@
         - name: default
           public_ip_address_name: pip
           primary: True
+
+  - name: Create a Windows VM
+    azure.azcollection.azure_rm_virtualmachine:
+      resource_group: azure-test-cdelapaz
+      name: azure-winvm-cdelapaz
+      vm_size: Standard_DS1_v2
+      admin_username: cdelapaz
+      admin_password: MyStrongPassw0rd!
+      network_interfaces: azure-winvm-nic
+      os_type: Windows
+      image:
+          offer: WindowsServer
+          publisher: MicrosoftWindowsServer
+          sku: 2019-Datacenter
+          version: latest
