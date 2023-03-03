@@ -129,15 +129,15 @@
   #     mail_nickname: mail-nickname-cdelapaz
   #     state: present
 
-  - name: Return a specific group using displayName for attribute_name
-    azure.azcollection.azure_rm_adgroup_info:
-      attribute_name: displayName
-      attribute_value: adgroup-test-cdelapaz
-      tenant: 2a731c61-a2b2-4661-8409-5b861cf40d0c
-      auth_source: auto
-    register: adgroup_output
-  - debug:
-      var: adgroup_output
+  # - name: Return a specific group using displayName for attribute_name
+  #   azure.azcollection.azure_rm_adgroup_info:
+  #     attribute_name: displayName
+  #     attribute_value: adgroup-test-cdelapaz
+  #     tenant: 2a731c61-a2b2-4661-8409-5b861cf40d0c
+  #     auth_source: auto
+  #   register: adgroup_output
+  # - debug:
+  #     var: adgroup_output
 
   # - name: Return all groups
   #   azure.azcollection.azure_rm_adgroup_info:
@@ -146,3 +146,4 @@
   #   register: adgroups_out
   # - debug:
   #     var: adgroups_out
+

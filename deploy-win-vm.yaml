@@ -1,0 +1,106 @@
+- name: Create a VM on Azure cloud
+  hosts: localhost
+  connection: local
+
+#  vars_prompt:
+#    - name: admin_password
+#      prompt: "Enter Local Admin Password"  
+
+  tasks:
+  # - name: Create a resource group
+  #   azure_rm_resourcegroup:
+  #     name: azure-test-cdelapaz
+  #     location: eastus
+  #     tags:
+  #       testing: testing
+  #       delete: never
+
+  # - name: Create a Virtual Network (VNET)
+  #   azure_rm_virtualnetwork:
+  #     resource_group: azure-test-cdelapaz
+  #     name: azure-test-vnet
+  #     address_prefixes: "10.0.0.0/16"
+
+  - name: Add a subnet in the VNET
+    azure_rm_subnet:
+      resource_group: azure-test-cdelapaz
+      name: azure-winvm-subnet
+      address_prefix: "10.0.2.0/24"
+      virtual_network: azure-test-vnet
+
+  - name: Create a public IP address
+    azure_rm_publicipaddress:
+      resource_group: azure-test-cdelapaz
+      allocation_method: Static
+      name: azure-winvm-public-ip
+    register: output_ip_address
+
+#  - name: Print Public IP of VM
+#    debug:
+#      msg: "The public IP of VM is {{ output_ip_address.state.ip_address }}."
+
+  - name: Create a Network Security Group (NSG) that allows SSH (port 22)
+    azure_rm_securitygroup:
+      resource_group: azure-test-cdelapaz
+      name: azure-winvm-nsg
+      rules:
+          - name: 'allow_rdp'
+            protocol: Tcp
+            destination_port_range: 3389
+            access: Allow
+            priority: 1001
+            direction: Inbound
+          - name: 'allow_web_traffic'
+            protocol: Tcp
+            destination_port_range:
+                - 80
+                - 443
+            access: Allow
+            priority: 1002
+            direction: Inbound
+          - name: 'allow_powershell_remoting'
+            protocol: Tcp
+            destination_port_range:
+              - 5985
+              - 5986
+            access: Allow
+            priority: 1003
+            direction: Inbound
+
+  - name: Create a virtual Network Interface Card (NIC)
+    azure_rm_networkinterface:
+      resource_group: azure-test-cdelapaz
+      name: azure-winvm-nic
+      virtual_network: azure-test-vnet
+      subnet: azure-winvm-subnet
+      security_group: azure-winvm-nsg
+      ip_configurations:
+        - name: default
+          public_ip_address_name: pip
+          primary: True
+
+#  - name: Create managed disk
+#    azure_rm_manageddisk:
+#      name: myDisk-cdelapaz
+#      location: eastus
+#      resource_group: azure-test-cdelapaz
+#      storage_account_type: Standard_LRS 
+#      disk_size_gb: 30
+#    register: myDisk
+#  - debug:
+#      var: myDisk.state.id
+
+  - name: Create a Windows VM
+      azure_rm_virtualmachine:
+        resource_group: azure-test-cdelapaz
+        name: azure-winvm-cdelapaz
+        vm_size: Standard_DS1_v2
+        admin_username: cdelapaz
+        admin_password: MyStrongPassw0rd!
+        network_interfaces: azure-winvm-nic
+        os_type: Windows
+        image:
+            offer: WindowsServer
+            publisher: MicrosoftWindowsServer
+            sku: 2019-Datacenter
+            version: latest
