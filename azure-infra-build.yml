@@ -7,5 +7,13 @@
 #  - vars/k8s.yml
   roles:
   - role: common
+    vars:
+      env: env1
+    tags:
+    - common
+
+  - role: common
+    vars:
+      env: env2
     tags:
     - common

@@ -7,25 +7,32 @@
 #      prompt: "Enter Local Admin Password"  
 
   tasks:
+  - name: Create a resource group
+    azure_rm_resourcegroup:
+      name: ansible-awx-cdelapaz
+      location: eastus
+      tags:
+        testing: testing
+        delete: never
 
   - name: Create a Virtual Network (VNET)
     azure_rm_virtualnetwork:
-      resource_group: ansible-awx-test
-      name: myVnet-cdelapaz
+      resource_group: ansible-awx-cdelapaz
+      name: ansible-awx-vnet
       address_prefixes: "10.0.0.0/16"
 
   - name: Add a subnet in the VNET
     azure_rm_subnet:
-      resource_group: ansible-awx-test
-      name: mySubnet-cdelapaz
+      resource_group: ansible-awx-cdelapaz
+      name: ansible-awx-subnet
       address_prefix: "10.0.1.0/24"
-      virtual_network: myVnet-cdelapaz
+      virtual_network: ansible-awx-vnet
 
   - name: Create a public IP address
     azure_rm_publicipaddress:
-      resource_group: ansible-awx-test
+      resource_group: ansible-awx-cdelapaz
       allocation_method: Static
-      name: myPublicIP-cdelapaz
+      name: ansible-awx-public-ip
     register: output_ip_address
 
 #  - name: Print Public IP of VM
@@ -34,8 +41,8 @@
 
   - name: Create a Network Security Group (NSG) that allows SSH (port 22)
     azure_rm_securitygroup:
-      resource_group: ansible-awx-test
-      name: myNetworkSecurityGroup-cdelapaz
+      resource_group: ansible-awx-cdelapaz
+      name: ansible-awx-nsg
       rules:
         - name: SSH
           protocol: Tcp
@@ -43,21 +50,27 @@
           access: Allow
           priority: 1001
           direction: Inbound
+        - name: AWXInBound
+          protocol: Tcp
+          destination_port_range: 30000-32768
+          access: Allow
+          priority: 1020
+          direction: Inbound
 
   - name: Create a virtual Network Interface Card (NIC)
     azure_rm_networkinterface:
-      resource_group: ansible-awx-test
-      name: myNIC-cdelapaz
-      virtual_network: myVnet-cdelapaz
-      subnet: mySubnet-cdelapaz
-      public_ip_name: myPublicIP-cdelapaz
-      security_group: myNetworkSecurityGroup-cdelapaz
+      resource_group: ansible-awx-cdelapaz
+      name: ansible-awx-nic
+      virtual_network: ansible-awx-vnet
+      subnet: ansible-awx-subnet
+      public_ip_name: ansible-awx-public-ip
+      security_group: ansible-awx-nsg
 
 #  - name: Create managed disk
 #    azure_rm_manageddisk:
 #      name: myDisk-cdelapaz
 #      location: eastus
-#      resource_group: ansible-awx-test
+#      resource_group: ansible-awx-cdelapaz
 #      storage_account_type: Standard_LRS 
 #      disk_size_gb: 30
 #    register: myDisk
@@ -66,13 +79,13 @@
 
   - name: Create a VM
     azure_rm_virtualmachine:
-      resource_group: ansible-awx-test
-      name: myVM-cdelapaz
+      resource_group: ansible-awx-cdelapaz
+      name: ansible-awx-vm
       vm_size: Standard_DS1_v2
       managed_disk_type: Standard_LRS
       admin_username: ubuntu
       admin_password: MyStrongPassw0rd!
-      network_interfaces: myNIC-cdelapaz
+      network_interfaces: ansible-awx-nic
       image:
         offer: 0001-com-ubuntu-server-focal
         publisher: canonical

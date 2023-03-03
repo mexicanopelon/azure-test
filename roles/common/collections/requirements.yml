@@ -1,0 +1,10 @@
+---
+collections:
+- name: azure.azcollection
+  version: ">=1.14.0"
+  source: https://galaxy.ansible.com
+
+# roles:
+# - name: role-name
+#  version: ""
+#  source: 
