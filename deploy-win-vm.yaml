@@ -93,12 +93,3 @@
           publisher: MicrosoftWindowsServer
           sku: 2019-Datacenter
           version: latest
-
-- name: Create a VM on Azure cloud
-  hosts: windows
-  connection: local
-  tasks:
-  - name: Run basic PowerShell script
-    ansible.windows.win_powershell:
-      script: |
-        echo "Hello World"
