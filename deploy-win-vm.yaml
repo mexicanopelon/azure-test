@@ -82,7 +82,7 @@
   - name: Create a Windows VM
     azure.azcollection.azure_rm_virtualmachine:
       resource_group: azure-test-cdelapaz
-      name: azure-winvm-cdelapaz
+      name: azureWinVMcdelapaz
       vm_size: Standard_DS1_v2
       admin_username: cdelapaz
       admin_password: MyStrongPassw0rd!
