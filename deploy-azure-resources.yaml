@@ -125,14 +125,14 @@
   - name: Create Ad Group
     azure.azcollection.azure_rm_adgroup:
       tenant: 2a731c61-a2b2-4661-8409-5b861cf40d0c
-      display_name: adgroup-test-cdelapaz
-      mail_nickname: mail-nickname-cdelapaz
+      display_name: adgroup-test-cdelapaz2
+      mail_nickname: mail-nickname-cdelapaz2
       state: present
 
   - name: Return a specific group using displayName for attribute_name
     azure.azcollection.azure_rm_adgroup_info:
       attribute_name: displayName
-      attribute_value: adgroup-test-cdelapaz
+      attribute_value: adgroup-test-cdelapaz2
       tenant: 2a731c61-a2b2-4661-8409-5b861cf40d0c
       auth_source: cli
     register: adgroup_output
