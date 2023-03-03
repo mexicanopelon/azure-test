@@ -134,7 +134,7 @@
       attribute_name: displayName
       attribute_value: adgroup-test-cdelapaz
       tenant: 2a731c61-a2b2-4661-8409-5b861cf40d0c
-      auth_source: cli
+      auth_source: auto
     register: adgroup_output
   - debug:
       var: adgroup_output
