@@ -1,5 +1,5 @@
 - name: Config Win VM on Azure cloud
-  hosts: windows
+  hosts: win
   connection: local
   tasks:
   - name: Run basic PowerShell script
