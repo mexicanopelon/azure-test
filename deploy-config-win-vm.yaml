@@ -93,3 +93,17 @@
           publisher: MicrosoftWindowsServer
           sku: 2019-Datacenter
           version: latest
+
+- name: Create a VM on Azure cloud
+  hosts: "{{ output_ip_address.state.ip_address }}"
+  connection: local
+  vars:
+    ansible_connection: winrm 
+    ansible_user: cdelapaz 
+    ansible_password: MyStrongPassw0rd!
+    ansible_winrm_server_cert_validation: ignore
+  tasks:
+  - name: Run basic PowerShell script
+    ansible.windows.win_powershell:
+      script: |
+        echo "Hello World"
