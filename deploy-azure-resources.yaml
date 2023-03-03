@@ -7,64 +7,64 @@
 #      prompt: "Enter Local Admin Password"  
 
   tasks:
-  - name: Create a resource group
-    azure_rm_resourcegroup:
-      name: azure-test-cdelapaz
-      location: eastus
-      tags:
-        testing: testing
-        delete: never
+  # - name: Create a resource group
+  #   azure_rm_resourcegroup:
+  #     name: azure-test-cdelapaz
+  #     location: eastus
+  #     tags:
+  #       testing: testing
+  #       delete: never
 
-  - name: Create a Virtual Network (VNET)
-    azure_rm_virtualnetwork:
-      resource_group: azure-test-cdelapaz
-      name: azure-test-vnet
-      address_prefixes: "10.0.0.0/16"
+  # - name: Create a Virtual Network (VNET)
+  #   azure_rm_virtualnetwork:
+  #     resource_group: azure-test-cdelapaz
+  #     name: azure-test-vnet
+  #     address_prefixes: "10.0.0.0/16"
 
-  - name: Add a subnet in the VNET
-    azure_rm_subnet:
-      resource_group: azure-test-cdelapaz
-      name: azure-test-subnet
-      address_prefix: "10.0.1.0/24"
-      virtual_network: azure-test-vnet
+  # - name: Add a subnet in the VNET
+  #   azure_rm_subnet:
+  #     resource_group: azure-test-cdelapaz
+  #     name: azure-test-subnet
+  #     address_prefix: "10.0.1.0/24"
+  #     virtual_network: azure-test-vnet
 
-  - name: Create a public IP address
-    azure_rm_publicipaddress:
-      resource_group: azure-test-cdelapaz
-      allocation_method: Static
-      name: azure-test-public-ip
-    register: output_ip_address
+  # - name: Create a public IP address
+  #   azure_rm_publicipaddress:
+  #     resource_group: azure-test-cdelapaz
+  #     allocation_method: Static
+  #     name: azure-test-public-ip
+  #   register: output_ip_address
 
 #  - name: Print Public IP of VM
 #    debug:
 #      msg: "The public IP of VM is {{ output_ip_address.state.ip_address }}."
 
-  - name: Create a Network Security Group (NSG) that allows SSH (port 22)
-    azure_rm_securitygroup:
-      resource_group: azure-test-cdelapaz
-      name: azure-test-nsg
-      rules:
-        - name: SSH
-          protocol: Tcp
-          destination_port_range: 22
-          access: Allow
-          priority: 1001
-          direction: Inbound
-        - name: AWXInBound
-          protocol: Tcp
-          destination_port_range: 30000-32768
-          access: Allow
-          priority: 1020
-          direction: Inbound
+  # - name: Create a Network Security Group (NSG) that allows SSH (port 22)
+  #   azure_rm_securitygroup:
+  #     resource_group: azure-test-cdelapaz
+  #     name: azure-test-nsg
+  #     rules:
+  #       - name: SSH
+  #         protocol: Tcp
+  #         destination_port_range: 22
+  #         access: Allow
+  #         priority: 1001
+  #         direction: Inbound
+  #       - name: AWXInBound
+  #         protocol: Tcp
+  #         destination_port_range: 30000-32768
+  #         access: Allow
+  #         priority: 1020
+  #         direction: Inbound
 
-  - name: Create a virtual Network Interface Card (NIC)
-    azure_rm_networkinterface:
-      resource_group: azure-test-cdelapaz
-      name: azure-test-nic
-      virtual_network: azure-test-vnet
-      subnet: azure-test-subnet
-      public_ip_name: azure-test-public-ip
-      security_group: azure-test-nsg
+  # - name: Create a virtual Network Interface Card (NIC)
+  #   azure_rm_networkinterface:
+  #     resource_group: azure-test-cdelapaz
+  #     name: azure-test-nic
+  #     virtual_network: azure-test-vnet
+  #     subnet: azure-test-subnet
+  #     public_ip_name: azure-test-public-ip
+  #     security_group: azure-test-nsg
 
 #  - name: Create managed disk
 #    azure_rm_manageddisk:
@@ -77,20 +77,72 @@
 #  - debug:
 #      var: myDisk.state.id
 
-  - name: Create a VM
-    azure_rm_virtualmachine:
-      resource_group: azure-test-cdelapaz
-      name: azure-test-vm
-      vm_size: Standard_DS1_v2
-      managed_disk_type: Standard_LRS
-      admin_username: ubuntu
-      admin_password: MyStrongPassw0rd!
-      network_interfaces: azure-test-nic
-      image:
-        offer: 0001-com-ubuntu-server-focal
-        publisher: canonical
-        sku: '20_04-lts-gen2'
-        version: latest
+  # - name: Create a VM
+  #   azure_rm_virtualmachine:
+  #     resource_group: azure-test-cdelapaz
+  #     name: azure-test-vm
+  #     vm_size: Standard_DS1_v2
+  #     managed_disk_type: Standard_LRS
+  #     admin_username: ubuntu
+  #     admin_password: MyStrongPassw0rd!
+  #     network_interfaces: azure-test-nic
+  #     image:
+  #       offer: 0001-com-ubuntu-server-focal
+  #       publisher: canonical
+  #       sku: '20_04-lts-gen2'
+  #       version: latest
 #      data_disks:
 #        - lun: 0
 #          managed_disk_id: "{{ myDisk.state.id }}"
+
+  # - name: Create instance of Key Vault
+  #   azure_rm_keyvault:
+  #     resource_group: azure-test-cdelapaz
+  #     vault_name: vault-cdelapaz
+  #     enabled_for_deployment: yes
+  #     vault_tenant: 2a731c61-a2b2-4661-8409-5b861cf40d0c
+  #     sku:
+  #       family: A
+  #       name: standard
+  #     access_policies:
+  #       - tenant_id: 2a731c61-a2b2-4661-8409-5b861cf40d0c
+  #         object_id: 41fa7136-8ed0-41ff-a591-58b13a5ef05c
+  #         keys:
+  #           - get
+  #           - list
+
+  # - name: Get Key Vault by name
+  #   azure_rm_keyvault_info:
+  #     resource_group: my_resource_group
+  #     name: my_vault_name
+  #   register: keyvault_check
+
+  # - name:  Do some task if Key Vault exists
+  #   debug:
+  #     msg: "I will print if Key Vault exists"
+  #   when: (keyvault_check.keyvaults | length) > 0
+
+  - name: Create Ad Group
+    azure.azcollection.azure_rm_adgroup:
+      tenant: 2a731c61-a2b2-4661-8409-5b861cf40d0c
+      display_name: adgroup-test-cdelapaz
+      mail_nickname: mail-nickname-cdelapaz
+      state: present
+
+  - name: Return a specific group using displayName for attribute_name
+    azure.azcollection.azure_rm_adgroup_info:
+      attribute_name: displayName
+      attribute_value: adgroup-test-cdelapaz
+      tenant: 2a731c61-a2b2-4661-8409-5b861cf40d0c
+      auth_source: cli
+    register: adgroup_output
+  - debug:
+      var: adgroup_output
+
+  # - name: Return all groups
+  #   azure.azcollection.azure_rm_adgroup_info:
+  #     tenant: 2a731c61-a2b2-4661-8409-5b861cf40d0c
+  #     all: True
+  #   register: adgroups_out
+  # - debug:
+  #     var: adgroups_out
