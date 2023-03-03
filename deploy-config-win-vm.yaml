@@ -95,7 +95,7 @@
           version: latest
 
 - name: Create a VM on Azure cloud
-  hosts: "{{ output_ip_address.state.ip_address }}"
+  hosts: 172.174.64.13
   connection: local
   vars:
     ansible_connection: winrm 
