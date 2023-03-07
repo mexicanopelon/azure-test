@@ -1,0 +1,31 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "aseName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the App Service Environment"
+            }
+        },
+        "subnetResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Subnet ID"
+            }
+        }
+    },
+    "resources": [{
+        "type": "Microsoft.Web/hostingEnvironments",
+        "apiVersion": "2022-03-01",
+        "name": "[parameters('aseName')]",
+        "location": "[resourceGroup().location]",
+        "kind": "ASEV3",
+        "properties": {
+            "internalLoadBalancingMode": "None",
+            "virtualNetwork": {
+                "id": "[parameters('subnetResourceId')]"
+            }
+        }
+    }]
+}

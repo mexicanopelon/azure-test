@@ -1,0 +1,89 @@
+- name: Deploy Azure App Service Environment
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  tasks:
+  - name: Create a resource group
+    azure_rm_resourcegroup:
+      name: azure-ase3-cdelapaz
+      location: eastus
+      tags:
+        testing: testing
+        delete: never
+
+  - name: Create a Virtual Network (VNET)
+    azure_rm_virtualnetwork:
+      resource_group: azure-ase3-cdelapaz
+      name: azure-ase3-vnet
+      address_prefixes: "10.0.0.0/16"
+
+  - name: Add a subnet in the VNET
+    azure_rm_subnet:
+      resource_group: azure-ase3-cdelapaz
+      name: azure-ase3-subnet
+      address_prefix: "10.0.1.0/24"
+      virtual_network: azure-ase3-vnet
+    register: subnet_out
+  - debug:
+      var: subnet_out.state.id
+
+  - name: "Create Azure App Service Env"
+    azure.azcollection.azure_rm_resource:
+      cloud_environment: AzureCloud
+      tenant: "2a731c61-a2b2-4661-8409-5b861cf40d0c"
+      subscription_id: "aaaaa147-fd6e-48fb-9a66-d044700dca17"
+      # client_id: "e636ac08-78ec-4f15-9fe5-9149ca9de24d"
+      # secret: "geI8Q~kbVjsk9abfZBvCZHq0TYMFRW~n3cuDGcJc"
+      method: "PUT"
+      idempotency: yes
+      resource_group: "azure-ase3-cdelapaz"
+      provider: "Web"
+      resource_type: "hostingEnvironments"
+      resource_name: "azure-ase3-test"
+      api_version: "2022-03-01"
+      body:
+        location: "eastus"
+        kind: "ASEV3"
+        properties:
+          # internalLoadBalancingMode: "None"
+          virtualNetwork:
+            id: "{{ subnet_out.state.id }}"
+            subnet: "azure-ase3-subnet"
+          # networkingConfiguration: {}
+          # customDnsSuffixConfiguration: ".p.azurewebsites.net"
+          # dedicatedHostCount: 1
+        # identity:
+        #   type: SystemAssigned
+    register: "ase3out"
+  - debug:
+      var: "ase3out.stout"
+
+  # - name: "Create Azure App Service Env 2019-04-01"
+  #   azure.azcollection.azure_rm_resource:
+  #     idempotency: true
+  #     resource_group: "azure-ase3-cdelapaz"
+  #     provider: "Web"
+  #     resource_type: "hostingEnvironments"
+  #     resource_name: "azure-ase3-test"
+  #     api_version: "2019-08-01"
+  #     body:
+  #       # name: "azure-ase3-test"
+  #       location: "eastus"
+  #       kind: "ASEV3"
+  #       properties:
+  #         name: "azure-ase3-test"
+  #         location: "eastus"
+  #         internalLoadBalancingMode: "None"
+  #         virtualNetwork:
+  #           id: "/subscriptions/aaaaa147-fd6e-48fb-9a66-d044700dca17/resourceGroups/azure-ase3-cdelapaz/providers/Microsoft.Network/virtualNetworks/azure-ase3-vnet/subnets/azure-ase3-subnet"
+  #           subnet: "azure-ase3-subnet"
+  #         # networkingConfiguration: {}
+  #         # customDnsSuffixConfiguration: ".p.azurewebsites.net"
+  #         dedicatedHostCount: 1
+  #         # zoneRedundant:  false
+  #         # workerPools: []
+  #       # identity:
+  #       #   type: SystemAssigned
+  #   register: "ase3out"
+  # - debug:
+  #     var: "ase3out.stout"

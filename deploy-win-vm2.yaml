@@ -2,33 +2,37 @@
   hosts: localhost
   connection: local
 
-  tasks:
-  - name: Create a resource group
-    azure.azcollection.azure_rm_resourcegroup:
-      name: azure-test-cdelapaz
-      location: eastus
-      tags:
-        testing: testing
-        delete: never
+#  vars_prompt:
+#    - name: admin_password
+#      prompt: "Enter Local Admin Password"  
 
-  - name: Create a Virtual Network (VNET)
-    azure.azcollection.azure_rm_virtualnetwork:
-      resource_group: azure-test-cdelapaz
-      name: azure-test-vnet
-      address_prefixes: "10.0.0.0/16"
+  tasks:
+  # - name: Create a resource group
+  #   azure.azcollection.azure_rm_resourcegroup:
+  #     name: azure-test-cdelapaz
+  #     location: eastus
+  #     tags:
+  #       testing: testing
+  #       delete: never
+
+  # - name: Create a Virtual Network (VNET)
+  #   azure.azcollection.azure_rm_virtualnetwork:
+  #     resource_group: azure-test-cdelapaz
+  #     name: azure-test-vnet
+  #     address_prefixes: "10.0.0.0/16"
 
   - name: Add a subnet in the VNET
     azure.azcollection.azure_rm_subnet:
       resource_group: azure-test-cdelapaz
-      name: azure-winvm-subnet
-      address_prefix: "10.0.2.0/24"
+      name: azure-winvm2-subnet
+      address_prefix: "10.0.3.0/24"
       virtual_network: azure-test-vnet
 
   - name: Create a public IP address
     azure.azcollection.azure_rm_publicipaddress:
       resource_group: azure-test-cdelapaz
       allocation_method: Static
-      name: azure-winvm-public-ip
+      name: azure-winvm2-public-ip
     register: output_ip_address
 
   - name: Print Public IP of VM
@@ -38,7 +42,7 @@
   - name: Create a Network Security Group (NSG) that allows SSH (port 22)
     azure.azcollection.azure_rm_securitygroup:
       resource_group: azure-test-cdelapaz
-      name: azure-winvm-nsg
+      name: azure-winvm2-nsg
       rules:
           - name: 'allow_rdp'
             protocol: Tcp
@@ -71,23 +75,23 @@
   - name: Create a virtual Network Interface Card (NIC)
     azure.azcollection.azure_rm_networkinterface:
       resource_group: azure-test-cdelapaz
-      name: azure-winvm-nic
+      name: azure-winvm2-nic
       virtual_network: azure-test-vnet
-      subnet: azure-winvm-subnet
-      security_group: azure-winvm-nsg
+      subnet: azure-winvm2-subnet
+      security_group: azure-winvm2-nsg
       ip_configurations:
         - name: default
-          public_ip_address_name: azure-winvm-public-ip
+          public_ip_address_name: azure-winvm2-public-ip
           primary: True
 
   - name: Create a Windows VM
     azure.azcollection.azure_rm_virtualmachine:
       resource_group: azure-test-cdelapaz
-      name: winvm-cdelapaz
+      name: winvm2-cdelapaz
       vm_size: Standard_DS1_v2
       admin_username: cdelapaz
-      admin_password: ********
-      network_interfaces: azure-winvm-nic
+      admin_password: MyStrongPassw0rd!
+      network_interfaces: azure-winvm2-nic
       os_type: Windows
       image:
           offer: WindowsServer

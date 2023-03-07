@@ -1,0 +1,6 @@
+- name: Create a PIP
+  pip_module:
+    name:  "{{ name }}"
+    param1: "{{ prop1 }}"
+    param2: "{{ prop2 }}"
+    param3: "{{ prop3 }}"

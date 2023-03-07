@@ -1,0 +1,32 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files:
+    - vars/myvars.yml
+  tasks:
+  - name:  Print parent level of list
+    debug:
+      msg:  "{{ pips.keys() | list }}"
+
+  - name:  Print parent name and attributes of dictionary.
+    debug:
+      msg: "{{ item }} has element {{ pips[item]['prop1'] }}, {{ pips[item]['prop2'] }}, {{ pips[item]['prop3'] }}"
+    loop: "{{ pips.keys() | list }}"
+
+
+
+  - name:  Print output of second list
+    debug:
+      msg:  "{{ item.name }} has element {{ item.prop1 }}, {{ item.prop2 }}, {{ item.prop3 }}"
+    loop: "{{ pipsList }}"
+
+
+  - name: Create pips
+    include_tasks: tasks/create_pip.yml
+    vars:
+      - name: item.name
+      - prop1: item.prop1
+      - prop2: item.prop2
+      - prop3: item.prop2
+    loop: "{{ pipsList }}"
