@@ -29,34 +29,69 @@
 
   - name: "Create Azure App Service Env"
     azure.azcollection.azure_rm_resource:
-      cloud_environment: AzureCloud
-      tenant: "2a731c61-a2b2-4661-8409-5b861cf40d0c"
-      subscription_id: "aaaaa147-fd6e-48fb-9a66-d044700dca17"
-      # client_id: "e636ac08-78ec-4f15-9fe5-9149ca9de24d"
-      # secret: "geI8Q~kbVjsk9abfZBvCZHq0TYMFRW~n3cuDGcJc"
-      method: "PUT"
       idempotency: yes
-      resource_group: "azure-ase3-cdelapaz"
-      provider: "Web"
-      resource_type: "hostingEnvironments"
-      resource_name: "azure-ase3-test"
-      api_version: "2022-03-01"
-      body:
-        location: "eastus"
-        kind: "ASEV3"
-        properties:
-          # internalLoadBalancingMode: "None"
-          virtualNetwork:
-            id: "{{ subnet_out.state.id }}"
-            subnet: "azure-ase3-subnet"
-          # networkingConfiguration: {}
-          # customDnsSuffixConfiguration: ".p.azurewebsites.net"
-          # dedicatedHostCount: 1
-        # identity:
-        #   type: SystemAssigned
-    register: "ase3out"
-  - debug:
-      var: "ase3out.stout"
+      api_version: '2022-03-01'
+      polling_timeout: 600
+      polling_interval: 30
+      resource_group: azure-ase3-cdelapaz
+      provider: Web
+      resource_type: hostingEnvironments
+      resource_name: azure-ase3-test
+      body: {
+        "kind": "ASEv3",
+        "location": "eastus",
+        "properties": {
+          "virtualNetwork": {
+            "id": "/subscriptions/aaaaa147-fd6e-48fb-9a66-d044700dca17/resourceGroups/azure-ase3-cdelapaz/providers/Microsoft.Network/virtualNetworks/azure-ase3-vnet/subnets/azure-ase3-subnet"
+          }
+        }
+      }
+  #     resource_group: "azure-ase3-cdelapaz"
+  #     provider: "Web"
+  #     resource_type: "hostingEnvironments"
+  #     resource_name: "azure-ase3-test"
+  #     api_version: "2022-03-01"
+  #     body:
+  #       location: "eastus"
+  #       kind: "ASEV3"
+  #       properties:
+  #         # internalLoadBalancingMode: "None"
+  #         virtualNetwork:
+  #           id: "{{ subnet_out.state.id }}"
+  #           subnet: "azure-ase3-subnet"
+  #         # networkingConfiguration: {}
+  #         # customDnsSuffixConfiguration: ".p.azurewebsites.net"
+  #         # dedicatedHostCount: 1
+  #       # identity:
+  #       #   type: SystemAssigned
+  #   register: "ase3out"
+  # - debug:
+  #     var: "ase3out.stout"
+
+  # - name: Create ASEv3
+  #   azure.azcollection.azure_rm_resource:
+  #     idempotency: yes
+  #     api_version: '2022-03-01'
+  #     polling_timeout: 600
+  #     polling_interval: 30
+  #     # url: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
+  #     resource_group: rg-plow-dev
+  #     provider: Web
+  #     resource_type: hostingEnvironments
+  #     resource_name: ase-plow-dev
+  #     body: {
+  #       "kind": "ASEv3",
+  #       "location": "South Central US",
+  #       "properties": {
+  #         "virtualNetwork": {
+  #           "id": "/subscriptions/87232d10-042d-4db2-b5c9-549ce082e065/resourceGroups/rg-core-infra/providers/Microsoft.Network/virtualNetworks/vnet-plow-001/subnets/snet-ase-232-0"
+  #         }
+  #       }
+  #     }
+
+
+
+
 
   # - name: "Create Azure App Service Env 2019-04-01"
   #   azure.azcollection.azure_rm_resource:
@@ -87,3 +122,4 @@
   #   register: "ase3out"
   # - debug:
   #     var: "ase3out.stout"
+

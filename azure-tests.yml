@@ -1,0 +1,133 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+#  vars_files:
+#  - vars/common.yml
+#  - vars/k8s.yml
+  vars:
+    cidr:  10.6.100.0/16
+    snet: 10.5.100.0/24
+    some_string: "/subscriptions/2807648b-f971-48cc-add9-0af5212b006d/resourceGroups/rg-clops-dev/providers/Microsoft.Web/hostingEnvironments/ase-clops-dev"
+  tasks:
+  # - name: test 1
+  #   ansible.builtin.debug:
+  #     msg: "{{ cidr.split('.').0 + '.' + cidr.split('.').1 + '.' + (((cidr.split('.').2 | int) + 1) | string) + '.' + cidr.split('.').3}}"
+
+  # - name: test 2
+  #   ansible.builtin.debug:
+  #     msg: "{{ cidr.split('/').0 }}"
+
+  # - name: Drop everything after last delimiter
+  #   ansible.builtin.debug:
+  #     msg: "{{ some_string.split('/').pop() }}"
+
+  # - name: Set string
+  #   set_fact:
+  #     str: "  \"name\": \"acb14595-551a-410b-afc7-39b58f86cfed\","
+  
+  # - name: Parse string
+  #   ansible.builtin.debug:
+  #     msg: "{{ str.split('\"').3 }}"
+
+  # - name: Parse string
+  #   ansible.builtin.debug:
+  #     msg: "{{ str.split('\"').3 }}"
+
+
+  # - name: "Wait 15 seconds"
+  #   ansible.builtin.wait_for:
+  #     timeout: 15
+  #   register: app_status
+  #   until: app_status.json.status == "READY"
+  #   retries: 10
+  #   delay: 1
+
+  # - name: "Create new subscription and get subscription ID"
+  # block:
+  #     - name: Task 1
+  #     - name: Task 2
+  #     - name: Task 3
+  # rescue:
+  #    - name: Print when errors
+  #      ansible.builtin.debug:
+  #        msg: 'I caught an error, can do stuff here to fix it, :-)'
+
+
+
+  - name: Format date
+    debug:
+      var: ('%Y%m%d' | strftime)
+
+  - name: test
+    set_fact:
+      str:  "\" this is my string with quotes \""
+
+  - debug:
+      var: str
+
+
+  # - name: ipaddr module
+  #   ansible.builtin.debug:
+  #     msg: "{{ snet | ansible.utils.ipsubnet(20, 1) }}"
+
+  # - name: Print all available facts
+  #   ansible.builtin.debug:
+  #     var: ansible_facts
+
+  # - name:  Print out user running Ansible playbook
+  #   ansible.builtin.debug:
+  #     msg: "{{ ansible_user_id }}"
+
+  # - name: create random but idempotent password
+  #   ansible.builtin.set_fact:
+  #     password: "{{ lookup('ansible.builtin.password', '/dev/null', seed=inventory_hostname) }}"
+  #   register: passwd
+  # - debug:
+  #     var: passwd
+
+  # - name: Run shell commands for az login
+  #   ansible.builtin.command: "echo {{ lookup('ansible.builtin.env', 'USER') }}"
+  #   register: output
+  # - debug:
+  #     var: output
+
+  # - name: Run shell commands for az login
+  #   ansible.builtin.shell: |
+  #     echo "{{ lookup('ansible.builtin.env', 'USER') }}"
+  #     echo "{{ lookup('ansible.builtin.env', 'COLORTERM') }}"
+  #     echo "{{ cidr }}"
+  #   register: output2
+  # - debug:
+  #     var: output2
+
+# - name: Run shell commands for az login
+#   ansible.builtin.shell: |
+#     az login --service-principal -u "{{ lookup('env', 'AZURE_CLIENT_ID') }}" -p "{{ lookup('env', 'AZURE_SECRET') }}" --tenant "{{ lookup('env', 'AZURE_TENANT') }}"
+#     az az_command "{{ ANSIBLE_VARS or FUNCTIONS }}"
+#   register: mylogin
+
+  # - name: Get facts for one IP group
+  #   azure.azcollection.azure_rm_ipgroup_info:
+  #     resource_group: myAzureResourceGroup
+  #     name: myipgroup
+  #   register: ipgroup_output
+  # - debug:
+  #     var: ipgroup_output
+  # - debug:
+  #     var: ipgroup_output.0.ip_addresses
+
+  # - name: Create a list of IPs with new and existing IPs
+  #   set_fact:
+  #     newPlusExistingIPs: "{{ ipgroup_output.0.ip_addresses + ['NEW_IP_1', 'NEW_IP_2'] }}"
+  #   # when: (ipgroup_output.0.ip_addresses | length) > 0
+
+  # - name: Create/Update IP Group
+  #   azure.azcollection.azure_rm_ipgroup:
+  #     resource_group: MyAzureResourceGroup
+  #     name: myipgroup
+  #     location: eastus
+  #     ip_addresses: "{{ newPlusExistingIPs }}"
+  #     tags:
+  #       key1: "value1"
+  #     state: present

@@ -19,16 +19,29 @@
       script: |
         echo "Hello World"
 
-  - name: run an executable command on a remote Windows system
+  - name: run an executable command on a remote Windows system 
     win_command: netstat -e # win_command is a Windows module. 
 
-  - name: Touch a file (creates if not present, updates modification time if present)
-    ansible.windows.win_file:
-      path: C:\Temp\cdelapaz_test.conf
-      state: touch
+  # - name: Touch a file (creates if not present, updates modification time if present)
+  #   ansible.windows.win_file:
+  #     path: C:\Temp\cdelapaz_test.conf
+  #     state: touch
 
 
-- name: windows test command
-  win_shell: C:\temp\Snapshots.ps1
-  args:
-    stdin: "{{ lookup('file', C:\temp\test3.csv) }}"
+  # - name: windows test command
+  #   win_shell: C:\temp\Snapshots.ps1
+  #   args:
+  #     stdin: "{{ lookup('file', C:\temp\test3.csv) }}"
+
+  # - name: Run Powershell script
+  #   win_shell: |
+  #     $ret = Test-Path -Path C:\tmp
+  #     if ($ret) {
+  #       Remove-Item -Path C:\tmp -Force
+  #     }
+  
+  # - name: Run a Powershell script located in the Ansible environment
+  #   script: ./scripts/test.ps1
+
+  # - name: Run a Powershell script located in the Windows server(s)
+  #   win_shell: C:\\test.ps1

@@ -1,0 +1,33 @@
+- name: Config Win VM on Azure cloud
+  hosts: win
+  gather_facts: false
+  vars:
+    ansible_user: <WINDOWS_USER>
+    ansible_password: <WINDOWS_PASSWD>
+    ansible_connection: winrm
+    ansible_port: <WINRM_PORT>
+    ansible_winrm_server_cert_validation: ignore
+    ansible_winrm_transport: kerberos
+  tasks:
+
+  - name: Test connection
+    win_ping:
+  
+  - name: Run basic PowerShell script
+    ansible.windows.win_powershell:
+      script: |
+        echo "Hello World"
+
+  - name: run an executable command on a remote Windows system
+    win_command: netstat -e # win_command is a Windows module. 
+
+  - name: Touch a file (creates if not present, updates modification time if present)
+    ansible.windows.win_file:
+      path: C:\Temp\cdelapaz_test.conf
+      state: touch
+
+
+- name: windows test command
+  win_shell: C:\temp\Snapshots.ps1
+  args:
+    stdin: "{{ lookup('file', C:\temp\test3.csv) }}"

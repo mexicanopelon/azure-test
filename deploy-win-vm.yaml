@@ -31,7 +31,7 @@
       name: azure-winvm-public-ip
     register: output_ip_address
 
-  - name: Print Public IP of VM
+  - name: Print public IP of VM
     debug:
       msg: "The public IP of VM is {{ output_ip_address.state.ip_address }}."
 
@@ -40,33 +40,33 @@
       resource_group: azure-test-cdelapaz
       name: azure-winvm-nsg
       rules:
-          - name: 'allow_rdp'
-            protocol: Tcp
-            destination_port_range: 3389
-            access: Allow
-            priority: 1001
-            direction: Inbound
-          - name: 'allow_web_traffic'
-            protocol: Tcp
-            destination_port_range:
-                - 80
-                - 443
-            access: Allow
-            priority: 1002
-            direction: Inbound
-          - name: 'allow_powershell_remoting'
-            protocol: Tcp
-            destination_port_range:
-              - 5985
-              - 5986
-            access: Allow
-            priority: 1003
-            direction: Inbound
-          - name: 'ICMP_port'
-            protocol: Icmp
-            access: Allow
-            priority: 1004
-            direction: Inbound
+        - name: 'allow_rdp'
+          protocol: Tcp
+          destination_port_range: 3389
+          access: Allow
+          priority: 1001
+          direction: Inbound
+        - name: 'allow_web_traffic'
+          protocol: Tcp
+          destination_port_range:
+            - 80
+            - 443
+          access: Allow
+          priority: 1002
+          direction: Inbound
+        - name: 'allow_powershell_remoting'
+          protocol: Tcp
+          destination_port_range:
+            - 5985
+            - 5986
+          access: Allow
+          priority: 1003
+          direction: Inbound
+        - name: 'ICMP_port'
+          protocol: Icmp
+          access: Allow
+          priority: 1004
+          direction: Inbound
 
   - name: Create a virtual Network Interface Card (NIC)
     azure.azcollection.azure_rm_networkinterface:
@@ -78,7 +78,7 @@
       ip_configurations:
         - name: default
           public_ip_address_name: azure-winvm-public-ip
-          primary: True
+          primary: true
 
   - name: Create a Windows VM
     azure.azcollection.azure_rm_virtualmachine:
@@ -86,11 +86,11 @@
       name: winvm-cdelapaz
       vm_size: Standard_DS1_v2
       admin_username: cdelapaz
-      admin_password: ********
+      admin_password: MyStrongPassw0rd!
       network_interfaces: azure-winvm-nic
       os_type: Windows
       image:
-          offer: WindowsServer
-          publisher: MicrosoftWindowsServer
-          sku: 2019-Datacenter
-          version: latest
+        offer: WindowsServer
+        publisher: MicrosoftWindowsServer
+        sku: 2019-Datacenter
+        version: latest
